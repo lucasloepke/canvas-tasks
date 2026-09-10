@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "Simple Canvas Tasks",
+  "version": "1.0.0",
+  "description": "Replaces the Canvas dashboard To Do sidebar with tabbed Assignments / Announcements / Calendar sections and live due-date countdowns.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Simple Canvas Tasks",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://canvas.pitt.edu/*",
+    "https://*.instructure.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://canvas.pitt.edu/*",
+        "https://*.instructure.com/*"
+      ],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}

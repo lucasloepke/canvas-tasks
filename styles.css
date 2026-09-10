@@ -1,0 +1,219 @@
+/* Simple Canvas Tasks styles */
+
+/* Hide the native To Do sidebar content, show only our widget. */
+#right-side > *:not(#ctp-widget) {
+  display: none !important;
+}
+
+#ctp-widget {
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #2d3b45;
+  margin-bottom: 24px;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+#ctp-widget *,
+#ctp-widget *::before,
+#ctp-widget *::after {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+#ctp-widget .ctp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 8px;
+  border-bottom: 1px solid #c7cdd1;
+  margin-bottom: 10px;
+}
+
+#ctp-widget .ctp-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  color: #2d3b45;
+}
+
+/* Tabs */
+#ctp-widget .ctp-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+#ctp-widget .ctp-tab {
+  flex: 1 1 0;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: #6b7780;
+  background: #f5f5f5;
+  border: 1px solid #d3d9de;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+#ctp-widget .ctp-tab-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+#ctp-widget .ctp-tab:hover {
+  background: #ebeef0;
+  color: #2d3b45;
+}
+
+#ctp-widget .ctp-tab--active {
+  background: #0374b5;
+  border-color: #0374b5;
+  color: #fff;
+}
+
+/* Body / list */
+#ctp-widget .ctp-body {
+  min-height: 40px;
+}
+
+#ctp-widget .ctp-message {
+  padding: 16px 4px;
+  color: #6b7780;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+#ctp-widget .ctp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#ctp-widget .ctp-item {
+  position: relative;
+  display: block;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #d3d9de;
+  border-left: 4px solid #0374b5;
+  border-radius: 6px;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.15s ease, transform 0.05s ease;
+}
+
+a.ctp-item:hover {
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+  text-decoration: none;
+}
+
+a.ctp-item:active {
+  transform: translateY(1px);
+}
+
+#ctp-widget .ctp-item-top {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 3px;
+}
+
+#ctp-widget .ctp-item-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #2d3b45;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+#ctp-widget .ctp-item-course {
+  font-size: 0.75rem;
+  color: #6b7780;
+  margin-bottom: 4px;
+  overflow-wrap: anywhere;
+}
+
+#ctp-widget .ctp-item-when {
+  font-size: 0.78rem;
+  color: #4a5b68;
+}
+
+/* Mark-as-done checkbox */
+#ctp-widget .ctp-item:has(.ctp-done-btn) {
+  padding-right: 40px;
+}
+
+#ctp-widget .ctp-done-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  line-height: 1;
+  color: #a3abb2;
+  background: #f0f1f2;
+  border: 1px solid #c7cdd1;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+#ctp-widget .ctp-done-btn:hover {
+  background: #0b7c3f;
+  border-color: #0b7c3f;
+  color: #fff;
+}
+
+/* Countdown */
+#ctp-widget .ctp-countdown {
+  margin-top: 5px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #0b7c3f;
+}
+
+#ctp-widget .ctp-countdown--soon {
+  color: #c5292a;
+}
+
+#ctp-widget .ctp-countdown--urgent {
+  color: #c5292a;
+}
+
+#ctp-widget .ctp-countdown--overdue {
+  color: #c5292a;
+}
+
+#ctp-widget .ctp-countdown--none {
+  color: #6b7780;
+  font-weight: 400;
+}
+
+#ctp-widget .ctp-due-abs {
+  font-weight: 400;
+  color: #6b7780;
+}
+
+/* Recent Feedback (cloned from Canvas' native sidebar) */
+#ctp-widget .ctp-feedback {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #c7cdd1;
+}
