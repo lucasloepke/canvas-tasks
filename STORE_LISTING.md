@@ -11,8 +11,8 @@ Simple Canvas Tasks
 
 ## Summary (132 characters max)
 
-A cleaner Canvas dashboard To Do: Tasks, Posts, and Calendar tabs with live
-due-date countdowns and per-class colors.
+A lightweight Canvas dashboard To Do: Tasks, Posts & Calendar tabs with live
+due-date countdowns. Fast, private, no bloat.
 
 ## Category
 
@@ -29,6 +29,14 @@ English (United States)
 Simple Canvas Tasks replaces the cluttered "To Do" sidebar on your Canvas
 dashboard with a focused, organized panel — so you can see what's actually due
 at a glance.
+
+LIGHTWEIGHT ON PURPOSE
+
+No accounts. No sign-ups. No ads. No trackers. No servers. No permissions beyond
+what's needed to draw the sidebar. It's a small, fast add-on that does one thing
+well — making your assignments easy to see — and then gets out of your way.
+Other task tools have grown into heavy, invasive products; this is the opposite:
+a simple, private drop-in that just works the moment you open your dashboard.
 
 WHAT YOU GET
 
@@ -53,7 +61,8 @@ PRIVATE BY DESIGN
 Everything runs locally in your browser. Simple Canvas Tasks uses the same data
 Canvas already loads for you (your planner items and course colors) and never
 sends anything to any server, developer, or third party. No account, no
-tracking, no analytics.
+tracking, no analytics — and it stays completely dormant on every non-Canvas
+page you visit.
 
 Open your Canvas dashboard and you're done — no setup required.
 

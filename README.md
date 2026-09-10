@@ -1,7 +1,13 @@
 # Simple Canvas Tasks
 
-A Chrome extension that replaces the Canvas dashboard **To Do** sidebar with a
-tabbed widget and live due-date countdowns.
+A **lightweight** Chrome extension that replaces the Canvas dashboard **To Do**
+sidebar with a tabbed widget and live due-date countdowns — making your
+assignments far easier to see at a glance.
+
+It's intentionally small and private: no accounts, no ads, no trackers, no
+servers, and it stays completely dormant on non-Canvas pages. Where other task
+tools have grown bloated and invasive, this is a simple drop-in that does one
+thing well and gets out of your way.
 
 ## What it does
 
