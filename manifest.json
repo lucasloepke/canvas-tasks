@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Simple Canvas Tasks",
   "version": "1.0.0",
-  "description": "Replaces the Canvas dashboard To Do sidebar with tabbed Assignments / Announcements / Calendar sections and live due-date countdowns.",
+  "description": "Replaces the Canvas dashboard To Do sidebar with tabbed Tasks / Posts / Calendar sections and live due-date countdowns.",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",

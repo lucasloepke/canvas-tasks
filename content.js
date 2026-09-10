@@ -257,27 +257,6 @@
     });
   }
 
-  function typeLabel(type) {
-    switch (type) {
-      case 'quiz':
-        return 'Quiz';
-      case 'discussion_topic':
-        return 'Discussion';
-      case 'wiki_page':
-        return 'Page';
-      case 'planner_note':
-        return 'Note';
-      case 'announcement':
-        return 'Announcement';
-      case 'calendar_event':
-        return 'Event';
-      case 'assessment_request':
-        return 'Peer Review';
-      default:
-        return 'Assignment';
-    }
-  }
-
   // ---------------------------------------------------------------------------
   // Rendering
   // ---------------------------------------------------------------------------
