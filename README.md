@@ -61,8 +61,10 @@ involved. Everything runs locally in your browser.
 4. Select this folder (`canvas-tasks`).
 5. Open your Canvas dashboard (e.g. https://canvas.pitt.edu/) and reload.
 
-The extension is scoped to `canvas.pitt.edu` and `*.instructure.com`. To use it
-on a different Canvas host, add that domain to `host_permissions` and
+The extension works on any Canvas site. It matches `https://*/*` in
+`manifest.json` but stays completely dormant on non-Canvas pages — on each page
+it checks for Canvas-specific markers and only activates on the Canvas dashboard.
+To limit it to specific domains instead, narrow `host_permissions` and
 `content_scripts[].matches` in `manifest.json`.
 
 ## Files

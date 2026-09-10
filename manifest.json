@@ -17,16 +17,10 @@
     }
   },
   "permissions": ["storage"],
-  "host_permissions": [
-    "https://canvas.pitt.edu/*",
-    "https://*.instructure.com/*"
-  ],
+  "host_permissions": ["https://*/*"],
   "content_scripts": [
     {
-      "matches": [
-        "https://canvas.pitt.edu/*",
-        "https://*.instructure.com/*"
-      ],
+      "matches": ["https://*/*"],
       "js": ["content.js"],
       "css": ["styles.css"],
       "run_at": "document_idle"

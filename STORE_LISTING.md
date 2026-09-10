@@ -76,11 +76,15 @@ Paste these into the "Privacy practices" tab of the dashboard.
 > so those tasks remain hidden after the page reloads. No personal data is stored
 > and nothing is transmitted.
 
-**Host permission (Canvas domains)**
-> The extension runs only on the user's Canvas site so it can read the user's
-> planner items and dashboard course colors (via Canvas' own APIs, using the
-> user's existing session) and render the replacement sidebar on the dashboard
-> page. This access is required for the extension's core and only function.
+**Host permission (`https://*/*`)**
+> Canvas is self-hosted by each school on its own domain (e.g.
+> school.instructure.com, canvas.university.edu), so there is no single URL
+> pattern that covers all Canvas installations. The extension therefore requests
+> broad host access, but it is dormant everywhere by default: on every page it
+> first checks for Canvas-specific markers and only activates on the Canvas
+> dashboard. When active, it reads the user's planner items and dashboard course
+> colors (via Canvas' own APIs, using the user's existing session) to render the
+> replacement sidebar. It never sends data anywhere.
 
 **Remote code**
 > No. The extension contains no remote code; all JavaScript and CSS are bundled
@@ -116,10 +120,12 @@ Paste these into the "Privacy practices" tab of the dashboard.
 2. **Host the privacy policy** at a public URL — e.g. GitHub Pages, or the raw
    file in a public repo — and put that URL in both the listing and manifest is
    not required, but the dashboard field is.
-3. **Decide host scope.** Currently the extension targets `canvas.pitt.edu` and
-   `*.instructure.com`. If you want it usable at other schools that use custom
-   Canvas domains, broaden the matches (this increases review scrutiny; the host
-   justification above covers it). If it's just for you, leave as-is.
+3. **Host scope.** The extension matches `https://*/*` so it works on any
+   school's Canvas domain (including custom domains). It stays dormant on
+   non-Canvas pages via runtime detection. Expect the store review to look
+   closely at the broad host permission — the justification above is written to
+   cover it. If you'd rather limit exposure, you can narrow the matches to the
+   specific Canvas domains you care about.
 4. **Zip the extension folder** (the files, not the parent folder) and upload:
    `manifest.json`, `content.js`, `styles.css`, and `icons/`. You do not need to
    include the `.md` files in the uploaded zip.

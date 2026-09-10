@@ -8,11 +8,30 @@
 
   const WIDGET_ID = 'ctp-widget';
 
-  // Only run on the dashboard/home screen.
-  function isDashboard() {
-    return location.pathname === '/' || !!document.getElementById('dashboard');
+  // The extension runs on all https sites, so first make sure this is actually
+  // a Canvas page, then that it's the dashboard/home screen. This keeps it fully
+  // dormant everywhere else.
+  function isCanvas() {
+    return !!(
+      document.querySelector('#application.ic-app') ||
+      document.querySelector('body.ic-app') ||
+      document.querySelector('div.ic-app') ||
+      document.querySelector('meta[name="csrf-token"][content]') &&
+        document.getElementById('right-side')
+    );
   }
-  if (!isDashboard()) return;
+
+  function isDashboard() {
+    if (document.querySelector('#dashboard.ic-dashboard-app')) return true;
+    // Fallback: a Canvas home page with the standard sidebar container.
+    return (
+      isCanvas() &&
+      location.pathname === '/' &&
+      !!document.getElementById('right-side')
+    );
+  }
+
+  if (!isCanvas() || !isDashboard()) return;
 
   // ---- state ----
   const state = {
