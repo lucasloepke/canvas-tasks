@@ -8,23 +8,50 @@ tabbed widget and live due-date countdowns.
 On the Canvas home screen (dashboard), the right-hand **To Do** area is replaced
 with a custom panel split into three tabs:
 
-- **Assignments** *(shown by default)* — assignments, quizzes, discussions, and
-  peer reviews you still need to submit. Each one shows a live
-  **"x days, x hours and x minutes until due"** countdown that ticks every
-  second and turns orange/red as the deadline approaches (and shows
-  **"Overdue by …"** when it's past due).
-- **Announcements** — recent course announcements.
+- **Tasks** *(shown by default)* — assignments, quizzes, discussions, and peer
+  reviews you still need to submit. Each one shows a live countdown of the time
+  until it's due and a small checkbox to mark it done.
+- **Posts** — recent course announcements.
 - **Calendar** — upcoming calendar events.
 
-A count badge on each tab shows how many items are in it.
+Below the tabs, the native **Recent Feedback** section is preserved (cloned back
+in from Canvas' own sidebar).
+
+### Countdowns
+
+Each task shows only the largest meaningful unit, to keep things short:
+
+- `17 days until due`
+- `9 hours until due` (once under a day)
+- `45 minutes until due` (once under an hour)
+- `Overdue` once past the due date
+
+The countdown text turns **red when something is due within 24 hours** (and for
+overdue items).
+
+### Course colors
+
+Each item's left color strip matches the color you picked for that class on the
+dashboard (pulled from `/api/v1/users/self/colors`). Items without a custom color
+fall back to a default blue strip.
+
+### Mark as done
+
+Every task has a small gray checkbox in its top-right corner. Clicking it hides
+the task and remembers it (via `chrome.storage.local`), so it stays hidden across
+reloads. This is a local-only action — it does **not** submit or check the item
+off in Canvas itself.
+
+Tasks are also hidden automatically when Canvas reports them as submitted,
+excused, or marked complete.
 
 ## How it works
 
 It uses the same data Canvas itself uses — the authenticated
 [`/api/v1/planner/items`](https://canvas.instructure.com/doc/api/planner.html)
-endpoint — fetched with your existing session cookie (`same-origin`), so there's
-no login, API token, or external server involved. Everything runs locally in
-your browser.
+endpoint (plus `/api/v1/users/self/colors`) — fetched with your existing session
+cookie (`same-origin`), so there's no login, API token, or external server
+involved. Everything runs locally in your browser.
 
 ## Install (unpacked)
 
@@ -42,8 +69,8 @@ on a different Canvas host, add that domain to `host_permissions` and
 
 | File | Purpose |
 | --- | --- |
-| `manifest.json` | MV3 extension manifest |
-| `content.js` | Fetches planner data, categorizes it, renders the tabbed widget + countdowns |
+| `manifest.json` | MV3 extension manifest (`storage` permission + Canvas host access) |
+| `content.js` | Fetches planner data + colors, categorizes it, renders the tabbed widget, countdowns, mark-as-done, and Recent Feedback |
 | `styles.css` | Widget styling; hides the native To Do content |
 | `icons/` | Toolbar icons |
 
@@ -52,6 +79,9 @@ on a different Canvas host, add that domain to `host_permissions` and
 - **Date window:** it loads items from 21 days ago through 120 days ahead. Adjust
   in `loadData()` in `content.js`.
 - **Default tab:** change `state.activeTab` in `content.js`.
-- **Submitted items** are hidden from the Assignments tab automatically.
+- **"Due soon" (red) threshold:** the `< 24h` cutoff lives in `formatCountdown()`
+  in `content.js`, with the color in `.ctp-countdown--soon` in `styles.css`.
+- **Reset "marked done" items:** clear the extension's storage, or remove the
+  `sctDone` key from `chrome.storage.local`.
 - If Canvas changes its planner API or sidebar markup, tweaking the selectors /
   endpoint in `content.js` is where you'd start.
