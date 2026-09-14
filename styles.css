@@ -36,6 +36,119 @@
   margin: 0;
   padding: 0;
   color: #2d3b45;
+  border: none;
+  text-decoration: none;
+}
+
+/* Header controls: period picker + settings gear */
+#ctp-widget .ctp-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+/* Time-period picker (gray box, e.g. "Week" with a dropdown arrow) */
+#ctp-widget .ctp-settings {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+#ctp-widget .ctp-period-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 26px;
+  padding: 0 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1;
+  color: #2d3b45;
+  background: #fcfcfd;
+  border: 1px solid #c7cdd1;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+#ctp-widget .ctp-period-btn:hover {
+  background: #e8eaec;
+}
+
+#ctp-widget .ctp-period-arrow {
+  display: block;
+  color: #6b7780;
+}
+
+#ctp-widget .ctp-settings-btn {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  color: #6b7780;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+#ctp-widget .ctp-settings-btn:hover {
+  background: #e8eaec;
+  color: #2d3b45;
+}
+
+#ctp-widget .ctp-settings-btn svg {
+  display: block;
+}
+
+#ctp-widget .ctp-settings-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 10;
+  min-width: 170px;
+  padding: 6px;
+  background: #fff;
+  border: 1px solid #c7cdd1;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+#ctp-widget .ctp-settings-menu[hidden] {
+  display: none;
+}
+
+#ctp-widget .ctp-settings-option {
+  display: block;
+  width: 100%;
+  padding: 7px 8px;
+  text-align: left;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2d3b45;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+#ctp-widget .ctp-settings-option:hover {
+  background: #ebeef0;
+}
+
+#ctp-widget .ctp-settings-option--active {
+  background: #0374b5;
+  color: #fff;
+}
+
+#ctp-widget .ctp-settings-option--active:hover {
+  background: #0374b5;
+  color: #fff;
 }
 
 /* Tabs */
@@ -93,6 +206,12 @@
   color: #6b7780;
   font-size: 0.85rem;
   text-align: center;
+}
+
+#ctp-widget .ctp-empty-emoji {
+  margin-top: 8px;
+  font-size: 2.6rem;
+  line-height: 1;
 }
 
 #ctp-widget .ctp-list {
@@ -211,9 +330,393 @@ a.ctp-item:active {
   color: #6b7780;
 }
 
+/* Add-task control + form */
+#ctp-widget .ctp-add {
+  margin-top: 10px;
+}
+
+#ctp-widget .ctp-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #6b7780;
+  background: #f5f5f5;
+  border: 1px dashed #c7cdd1;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+#ctp-widget .ctp-add-btn:hover {
+  background: #ebeef0;
+  color: #2d3b45;
+  border-color: #0374b5;
+}
+
+#ctp-widget .ctp-add-plus {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Add-task modal */
+.ctp-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.45);
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #2d3b45;
+}
+
+.ctp-modal-overlay *,
+.ctp-modal-overlay *::before,
+.ctp-modal-overlay *::after {
+  box-sizing: border-box;
+}
+
+.ctp-modal {
+  width: 100%;
+  max-width: 420px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.ctp-modal--sm {
+  max-width: 380px;
+}
+
+.ctp-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid #e3e6e8;
+}
+
+.ctp-modal-title {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #2d3b45;
+}
+
+.ctp-modal-close {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  line-height: 1;
+  color: #6b7780;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.ctp-modal-close:hover {
+  background: #e8eaec;
+  color: #2d3b45;
+}
+
+.ctp-add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.ctp-add-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ctp-add-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #4a5b68;
+}
+
+.ctp-add-input,
+.ctp-add-select {
+  width: 100%;
+  min-height: 40px;
+  padding: 9px 10px;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  font-family: inherit;
+  color: #2d3b45;
+  background: #fff;
+  border: 1px solid #c7cdd1;
+  border-radius: 4px;
+}
+
+/* Due-date field: a single datetime-local styled as the field. Its native
+   picker indicator is expanded to cover the whole box so clicking anywhere
+   opens the picker; the segments aren't individually selectable. */
+.ctp-add-dateinput {
+  position: relative;
+  cursor: pointer;
+}
+
+.ctp-add-dateinput::-webkit-calendar-picker-indicator {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.ctp-add-dateinput::-webkit-inner-spin-button,
+.ctp-add-dateinput::-webkit-clear-button {
+  display: none;
+}
+
+.ctp-add-input:focus,
+.ctp-add-select:focus {
+  outline: none;
+  border-color: #0374b5;
+  box-shadow: 0 0 0 1px #0374b5;
+}
+
+.ctp-add-input--error {
+  border-color: #c5292a;
+  box-shadow: 0 0 0 1px #c5292a;
+}
+
+.ctp-add-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.ctp-add-submit,
+.ctp-add-cancel {
+  padding: 9px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.ctp-add-submit {
+  color: #fff;
+  background: #0374b5;
+  border: 1px solid #0374b5;
+}
+
+.ctp-add-submit:hover {
+  background: #025d90;
+  border-color: #025d90;
+}
+
+.ctp-add-cancel {
+  color: #6b7780;
+  background: #f0f1f2;
+  border: 1px solid #c7cdd1;
+}
+
+.ctp-add-cancel:hover {
+  background: #e2e5e8;
+  color: #2d3b45;
+}
+
+/* Settings modal body */
+.ctp-modal-body {
+  padding: 14px 16px;
+}
+
+.ctp-modal-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+/* Subtle divider between each settings row. */
+.ctp-modal-body .ctp-modal-row + .ctp-modal-row {
+  border-top: 1px solid #eef0f1;
+}
+
+.ctp-modal-row-text {
+  min-width: 0;
+}
+
+.ctp-modal-row-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2d3b45;
+}
+
+.ctp-modal-row-hint {
+  margin-top: 2px;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: #8a949b;
+}
+
+.ctp-modal-select {
+  flex: 0 0 auto;
+  height: 34px;
+  min-height: 0;
+  margin: 0;
+  padding: 5px 30px 5px 10px;
+  box-sizing: border-box;
+  line-height: 1.2;
+  font-size: 0.85rem;
+  font-family: inherit;
+  color: #2d3b45;
+  background: #fff;
+  border: 1px solid #c7cdd1;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.ctp-modal-select:focus {
+  outline: none;
+  border-color: #0374b5;
+  box-shadow: 0 0 0 1px #0374b5;
+}
+
+/* Toggle switch */
+.ctp-switch {
+  position: relative;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 22px;
+}
+
+.ctp-switch input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.ctp-switch-slider {
+  position: absolute;
+  inset: 0;
+  background: #c7cdd1;
+  border-radius: 999px;
+  transition: background 0.15s ease;
+  pointer-events: none;
+}
+
+.ctp-switch-slider::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  transition: transform 0.15s ease;
+}
+
+.ctp-switch input:checked + .ctp-switch-slider {
+  background: #0374b5;
+}
+
+.ctp-switch input:checked + .ctp-switch-slider::before {
+  transform: translateX(16px);
+}
+
+.ctp-switch input:focus-visible + .ctp-switch-slider {
+  box-shadow: 0 0 0 2px rgba(3, 116, 181, 0.4);
+}
+
+/* Secondary (reset) button in the Data section */
+.ctp-modal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  font-size: 0.83rem;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.ctp-modal-btn--secondary {
+  color: #b81111;
+  background: #fff;
+  border: 1px solid #d7dade;
+}
+
+.ctp-modal-btn--secondary:hover {
+  background: #fbecec;
+  border-color: #e0b4b4;
+}
+
 /* Recent Feedback (cloned from Canvas' native sidebar) */
 #ctp-widget .ctp-feedback {
   margin-top: 18px;
   padding-top: 14px;
   border-top: 1px solid #c7cdd1;
+}
+
+/* Confetti burst on marking a task done */
+.ctp-confetti {
+  position: fixed;
+  z-index: 2147483647;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+
+.ctp-confetti-piece {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: ctp-confetti-fly 900ms cubic-bezier(0.15, 0.6, 0.4, 1) forwards;
+}
+
+@keyframes ctp-confetti-fly {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), calc(var(--dy) + 80px)) rotate(var(--rot)) scale(0.4);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctp-confetti { display: none; }
 }
