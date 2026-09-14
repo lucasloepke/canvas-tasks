@@ -50,8 +50,15 @@ WHAT YOU GET
 • Your class colors — each item is tagged with the same color you chose for that
   course on your Canvas dashboard, so you can tell classes apart instantly.
 
+• Pick your time window — a quick dropdown shows what's due in the next Day, Week,
+  2 Weeks, or Month.
+
+• Add your own tasks — create personal to-dos with a title, course, and due date;
+  they get the same countdowns and colors as your Canvas assignments.
+
 • Mark as done — a quick checkbox hides tasks you've finished, and remembers them
-  across reloads.
+  across reloads. A Settings panel lets you set your default tab, show or hide
+  overdue tasks, and restore everything you've marked done.
 
 • Recent Feedback stays — the native Recent Feedback section is preserved right
   below your tasks.

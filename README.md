@@ -23,6 +23,29 @@ with a custom panel split into three tabs:
 Below the tabs, the native **Recent Feedback** section is preserved (cloned back
 in from Canvas' own sidebar).
 
+### Time-period selector
+
+Next to the header is a small gray dropdown (defaulting to **Week**) for choosing
+how far ahead the Tasks list looks: **Day**, **Week**, **2 Weeks**, or **Month**.
+Your choice is remembered locally.
+
+### Add task
+
+An **Add task** button at the bottom of the Tasks list lets you create your own
+tasks (title, course, and due date). They live alongside your Canvas assignments,
+show the same countdowns and course color, and are stored locally.
+
+### Settings
+
+A gear icon opens a **Settings** panel with:
+
+- **Default tab** — which tab (Tasks / Posts / Calendar) opens when the dashboard
+  loads.
+- **Show overdue tasks** — toggle whether past-due assignments stay in the list.
+- **Restore all "Mark as Done" items** — bring back everything you've hidden.
+
+All settings are saved locally via `chrome.storage.local`.
+
 ### Countdowns
 
 Each task shows only the largest meaningful unit, to keep things short:
@@ -86,10 +109,13 @@ To limit it to specific domains instead, narrow `host_permissions` and
 
 - **Date window:** it loads items from 21 days ago through 120 days ahead. Adjust
   in `loadData()` in `content.js`.
-- **Default tab:** change `state.activeTab` in `content.js`.
+- **Time period:** choose Day / Week / 2 Weeks / Month from the header dropdown
+  (the underlying `PERIODS` list lives in `content.js`).
+- **Default tab & overdue visibility:** set these in the **Settings** panel (gear
+  icon). They persist via `chrome.storage.local`.
 - **"Due soon" (red) threshold:** the `< 24h` cutoff lives in `formatCountdown()`
   in `content.js`, with the color in `.ctp-countdown--soon` in `styles.css`.
-- **Reset "marked done" items:** clear the extension's storage, or remove the
-  `sctDone` key from `chrome.storage.local`.
+- **Reset "marked done" items:** use **Restore all "Mark as Done" items** in the
+  Settings panel (or remove the `sctDone` key from `chrome.storage.local`).
 - If Canvas changes its planner API or sidebar markup, tweaking the selectors /
   endpoint in `content.js` is where you'd start.
