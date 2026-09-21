@@ -9,6 +9,9 @@ servers, and it stays completely dormant on non-Canvas pages. Where other task
 tools have grown bloated and invasive, this is a simple drop-in that does one
 thing well and gets out of your way.
 
+**Install from the
+[Chrome Web Store](https://chromewebstore.google.com/detail/dejmhgkaogjhiannogiggcffkhodeoek).**
+
 ## What it does
 
 On the Canvas home screen (dashboard), the right-hand **To Do** area is replaced
