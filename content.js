@@ -1,6 +1,8 @@
 /* Simple Canvas Tasks
- * Replaces the dashboard "To Do" sidebar with a tabbed widget:
+ * Replaces the Canvas "To Do" sidebar with a tabbed widget:
  *   Assignments (default) | Announcements | Calendar
+ * Works on the dashboard (all courses) and on course pages (that class only).
+ * Grades pages are left alone — their sidebar shows total grades.
  * Each assignment shows a live "x hours and x minutes until due" countdown.
  */
 (function () {
@@ -9,8 +11,9 @@
   const WIDGET_ID = 'ctp-widget';
 
   // The extension runs on all https sites, so first make sure this is actually
-  // a Canvas page, then that it's the dashboard/home screen. This keeps it fully
-  // dormant everywhere else.
+  // a Canvas page, then that it's a screen where we should replace the sidebar
+  // (dashboard, or a course page — but never the grades page, which uses the
+  // right sidebar for total grades).
   function isCanvas() {
     return !!(
       document.querySelector('#application.ic-app') ||
@@ -31,7 +34,25 @@
     );
   }
 
-  if (!isCanvas() || !isDashboard()) return;
+  // Grades pages use #right-side for the total-grade summary — leave them alone.
+  function isGradesPage() {
+    return /\/courses\/\d+\/grades(?:\/|$|\?)/.test(location.pathname);
+  }
+
+  // Course id when viewing a class (e.g. /courses/384611 or /courses/384611/modules).
+  function getCourseIdFromPath() {
+    const m = location.pathname.match(/^\/courses\/(\d+)(?:\/|$)/);
+    return m ? m[1] : null;
+  }
+
+  function shouldRun() {
+    if (!isCanvas() || isGradesPage()) return false;
+    if (isDashboard()) return true;
+    // Course pages (widget only mounts once #right-side exists).
+    return !!getCourseIdFromPath();
+  }
+
+  if (!shouldRun()) return;
 
   // ---- state ----
   const state = {
@@ -40,6 +61,7 @@
     calendar: [],
     customTasks: [], // user-created tasks, persisted locally
     courses: [], // [{ id, name }] in dashboard order, for the add-task picker
+    courseFilter: getCourseIdFromPath(), // null on dashboard; course id when scoped
     activeTab: 'assignments',
     timePeriod: 'week',
     defaultTab: 'assignments', // tab shown when the widget first loads
@@ -167,9 +189,15 @@
   }
 
   // Merge stored custom tasks into the assignments list (skipping ones already
-  // marked done) and re-sort by due date.
+  // marked done) and re-sort by due date. When scoped to a course, only include
+  // tasks that belong to that course.
   function injectCustomTasks() {
-    const active = state.customTasks.filter((t) => !doneKeys.has(t.id));
+    let active = state.customTasks.filter((t) => !doneKeys.has(t.id));
+    if (state.courseFilter) {
+      active = active.filter(
+        (t) => t.courseId != null && String(t.courseId) === String(state.courseFilter)
+      );
+    }
     // Refresh each task's tint in case colors loaded after it was created.
     for (const t of active) {
       if (t.courseId != null) {
@@ -370,15 +398,19 @@
     await loadCourses();
 
     // The Planner API returns assignments, quizzes, discussions, announcements,
-    // and calendar events with dates in one place.
+    // and calendar events with dates in one place. On a course page, scope the
+    // request to that course so the sidebar matches the class you're viewing.
     const start = encodeURIComponent(isoDaysFromNow(-21)); // catch recent announcements
     const end = encodeURIComponent(isoDaysFromNow(120));
-    const url =
+    let url =
       '/api/v1/planner/items?start_date=' +
       start +
       '&end_date=' +
       end +
       '&per_page=50';
+    if (state.courseFilter) {
+      url += '&context_codes[]=course_' + encodeURIComponent(state.courseFilter);
+    }
     const raw = await fetchAll(url, 6);
     categorize(raw);
   }
@@ -402,11 +434,22 @@
       const type = it.plannable_type;
       const p = it.plannable || {};
       const date = it.plannable_date || p.due_at || p.todo_date || p.start_at || null;
+      const itemCourseId = it.course_id != null ? it.course_id : null;
+      // Drop items we know belong to a different course. Keep null-courseId
+      // items when the API already scoped via context_codes.
+      if (
+        state.courseFilter &&
+        itemCourseId != null &&
+        String(itemCourseId) !== String(state.courseFilter)
+      ) {
+        continue;
+      }
       const base = {
         id: type + ':' + (it.plannable_id != null ? it.plannable_id : p.id),
         type,
         title: p.title || p.name || '(untitled)',
         course: it.context_name || '',
+        courseId: itemCourseId,
         url: it.html_url
           ? it.html_url.startsWith('http')
             ? it.html_url
@@ -1005,8 +1048,15 @@
       const opt = document.createElement('option');
       opt.value = String(c.id);
       opt.textContent = c.name;
+      if (state.courseFilter && String(c.id) === String(state.courseFilter)) {
+        opt.selected = true;
+      }
       courseSelect.appendChild(opt);
     });
+    // On a course page, default the picker to that class.
+    if (state.courseFilter) {
+      courseSelect.value = String(state.courseFilter);
+    }
     courseField.appendChild(courseSelect);
     form.appendChild(courseField);
 
@@ -1165,8 +1215,11 @@
   // Mounting
   // ---------------------------------------------------------------------------
   function mount() {
+    // Grades (and any other page without a sidebar) — do nothing.
+    if (isGradesPage()) return false;
     const rightSide = document.getElementById('right-side');
     if (!rightSide) return false;
+    document.body.classList.add('ctp-active');
     if (!widget) widget = buildWidget();
     if (!document.getElementById(WIDGET_ID)) {
       rightSide.appendChild(widget);
