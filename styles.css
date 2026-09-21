@@ -1,7 +1,8 @@
 /* Simple Canvas Tasks styles */
 
-/* Hide the native To Do sidebar content, show only our widget. */
-#right-side > *:not(#ctp-widget) {
+/* Hide the native To Do sidebar content only when our widget is active.
+   Grades pages (and any other page we leave alone) never get .ctp-active. */
+body.ctp-active #right-side > *:not(#ctp-widget) {
   display: none !important;
 }
 
