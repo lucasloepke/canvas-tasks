@@ -1,8 +1,9 @@
 /* Simple Canvas Tasks
  * Replaces the Canvas "To Do" sidebar with a tabbed widget:
  *   Assignments (default) | Announcements | Calendar
- * Works on the dashboard (all courses) and on course pages (that class only).
- * Grades pages are left alone — their sidebar shows total grades.
+ * Only on the dashboard (all courses) and the course home page (that class).
+ * Deeper pages (assignments, quizzes, grades, modules, …) are left alone —
+ * their right sidebar is used for grades, feedback, and other native UI.
  * Each assignment shows a live "x hours and x minutes until due" countdown.
  */
 (function () {
@@ -12,8 +13,7 @@
 
   // The extension runs on all https sites, so first make sure this is actually
   // a Canvas page, then that it's a screen where we should replace the sidebar
-  // (dashboard, or a course page — but never the grades page, which uses the
-  // right sidebar for total grades).
+  // (dashboard or course home only — never drilled-down course pages).
   function isCanvas() {
     return !!(
       document.querySelector('#application.ic-app') ||
@@ -34,25 +34,25 @@
     );
   }
 
-  // Grades pages use #right-side for the total-grade summary — leave them alone.
-  function isGradesPage() {
-    return /\/courses\/\d+\/grades(?:\/|$|\?)/.test(location.pathname);
+  // Course home only: /courses/378537 (optional trailing slash). Not
+  // /courses/…/assignments/…, /quizzes/…, /grades, /modules, etc.
+  function isCourseHome() {
+    return /^\/courses\/\d+\/?$/.test(location.pathname);
   }
 
-  // Course id when viewing a class (e.g. /courses/384611 or /courses/384611/modules).
+  // Course id when on a course home URL (e.g. /courses/384611).
   function getCourseIdFromPath() {
-    const m = location.pathname.match(/^\/courses\/(\d+)(?:\/|$)/);
+    const m = location.pathname.match(/^\/courses\/(\d+)\/?$/);
     return m ? m[1] : null;
   }
 
-  function shouldRun() {
-    if (!isCanvas() || isGradesPage()) return false;
-    if (isDashboard()) return true;
-    // Course pages (widget only mounts once #right-side exists).
-    return !!getCourseIdFromPath();
+  function isAllowedPage() {
+    return isDashboard() || isCourseHome();
   }
 
-  if (!shouldRun()) return;
+  // Stay alive on any Canvas page so SPA navigations can mount/unmount us,
+  // but never activate on non-Canvas sites.
+  if (!isCanvas()) return;
 
   // ---- state ----
   const state = {
@@ -87,18 +87,6 @@
   // ---------------------------------------------------------------------------
   // "Mark as done" persistence (locally, via chrome.storage)
   // ---------------------------------------------------------------------------
-  function loadDone() {
-    return new Promise((resolve) => {
-      try {
-        chrome.storage.local.get(['sctDone'], (res) => {
-          resolve(new Set((res && res.sctDone) || []));
-        });
-      } catch (e) {
-        resolve(new Set());
-      }
-    });
-  }
-
   function saveDone() {
     try {
       chrome.storage.local.set({ sctDone: Array.from(doneKeys) });
@@ -168,18 +156,6 @@
   // ---------------------------------------------------------------------------
   // Custom (user-created) tasks — persisted locally via chrome.storage
   // ---------------------------------------------------------------------------
-  function loadCustomTasks() {
-    return new Promise((resolve) => {
-      try {
-        chrome.storage.local.get(['sctCustom'], (res) => {
-          resolve((res && Array.isArray(res.sctCustom) && res.sctCustom) || []);
-        });
-      } catch (e) {
-        resolve([]);
-      }
-    });
-  }
-
   function saveCustomTasks() {
     try {
       chrome.storage.local.set({ sctCustom: state.customTasks });
@@ -231,16 +207,34 @@
   }
 
   // ---------------------------------------------------------------------------
-  // Time-period preference (how far ahead the assignments list looks)
+  // Local preferences (one storage read for everything we need at boot)
   // ---------------------------------------------------------------------------
-  function loadPeriod() {
+  function loadAllLocal() {
     return new Promise((resolve) => {
+      const fallback = {
+        period: 'week',
+        defaultTab: 'assignments',
+        showOverdue: true,
+        done: new Set(),
+        customTasks: [],
+      };
       try {
-        chrome.storage.local.get(['sctPeriod'], (res) => {
-          resolve((res && res.sctPeriod) || 'week');
-        });
+        chrome.storage.local.get(
+          ['sctPeriod', 'sctDefaultTab', 'sctShowOverdue', 'sctDone', 'sctCustom'],
+          (res) => {
+            if (!res) return resolve(fallback);
+            resolve({
+              period: res.sctPeriod || 'week',
+              defaultTab: res.sctDefaultTab || 'assignments',
+              showOverdue:
+                res.sctShowOverdue === undefined ? true : !!res.sctShowOverdue,
+              done: new Set(res.sctDone || []),
+              customTasks: Array.isArray(res.sctCustom) ? res.sctCustom : [],
+            });
+          }
+        );
       } catch (e) {
-        resolve('week');
+        resolve(fallback);
       }
     });
   }
@@ -251,25 +245,6 @@
     } catch (e) {
       /* no-op */
     }
-  }
-
-  // General preferences (default tab + overdue visibility), persisted locally.
-  function loadPrefs() {
-    return new Promise((resolve) => {
-      try {
-        chrome.storage.local.get(['sctDefaultTab', 'sctShowOverdue'], (res) => {
-          resolve({
-            defaultTab: (res && res.sctDefaultTab) || 'assignments',
-            showOverdue:
-              !res || res.sctShowOverdue === undefined
-                ? true
-                : !!res.sctShowOverdue,
-          });
-        });
-      } catch (e) {
-        resolve({ defaultTab: 'assignments', showOverdue: true });
-      }
-    });
   }
 
   function savePrefs() {
@@ -391,28 +366,49 @@
     }
   }
 
-  async function loadData() {
-    // Load the dashboard course colors + course list first so items can be
-    // tinted and the add-task picker is populated.
-    await loadColors();
-    await loadCourses();
-
-    // The Planner API returns assignments, quizzes, discussions, announcements,
-    // and calendar events with dates in one place. On a course page, scope the
-    // request to that course so the sidebar matches the class you're viewing.
-    const start = encodeURIComponent(isoDaysFromNow(-21)); // catch recent announcements
+  function plannerUrl() {
+    // Planner API: assignments, quizzes, discussions, announcements, events.
+    // On a course home page, scope to that course.
+    const start = encodeURIComponent(isoDaysFromNow(-21)); // recent announcements
     const end = encodeURIComponent(isoDaysFromNow(120));
     let url =
       '/api/v1/planner/items?start_date=' +
       start +
       '&end_date=' +
       end +
-      '&per_page=50';
+      '&per_page=100';
     if (state.courseFilter) {
       url += '&context_codes[]=course_' + encodeURIComponent(state.courseFilter);
     }
-    const raw = await fetchAll(url, 6);
-    categorize(raw);
+    return url;
+  }
+
+  function applyLocal(local) {
+    state.timePeriod = local.period;
+    state.defaultTab = local.defaultTab;
+    state.showOverdue = local.showOverdue;
+    state.activeTab = local.defaultTab;
+    doneKeys = local.done;
+    state.customTasks = local.customTasks;
+  }
+
+  // Fetch colors, courses, and planner in parallel. Optionally await local
+  // prefs first so categorize() sees doneKeys / custom tasks.
+  async function loadData(opts) {
+    const waitLocal = opts && opts.localP;
+    const netP = Promise.all([
+      loadColors(),
+      loadCourses(),
+      fetchAll(plannerUrl(), 4),
+    ]);
+    if (waitLocal) {
+      const [local, [, , raw]] = await Promise.all([waitLocal, netP]);
+      applyLocal(local);
+      categorize(raw);
+    } else {
+      const [, , raw] = await netP;
+      categorize(raw);
+    }
   }
 
   const ASSIGNMENT_TYPES = [
@@ -1214,39 +1210,134 @@
   // ---------------------------------------------------------------------------
   // Mounting
   // ---------------------------------------------------------------------------
-  function mount() {
-    // Grades (and any other page without a sidebar) — do nothing.
-    if (isGradesPage()) return false;
+  let booted = false; // true after first successful afterMount()
+  let lastPath = location.pathname;
+  let routeObs = null;
+
+  function unmount() {
+    document.body.classList.remove('ctp-active');
+    const el = document.getElementById(WIDGET_ID);
+    if (el) el.remove();
+  }
+
+  // Swap in our widget and hide the native To Do immediately so Canvas' list
+  // is never visible underneath.
+  function revealWidget() {
     const rightSide = document.getElementById('right-side');
-    if (!rightSide) return false;
-    document.body.classList.add('ctp-active');
+    if (!rightSide || !isAllowedPage()) return;
     if (!widget) widget = buildWidget();
+    document.body.classList.add('ctp-active');
     if (!document.getElementById(WIDGET_ID)) {
       rightSide.appendChild(widget);
-      updateTabs();
-      updatePeriodMenu();
-      renderBody();
     }
+    updateTabs();
+    updatePeriodMenu();
+    renderBody();
+  }
+
+  function mount() {
+    // Only the dashboard and course home — leave assignment/quiz/grades/etc alone.
+    if (!isAllowedPage()) {
+      unmount();
+      return false;
+    }
+    const rightSide = document.getElementById('right-side');
+    if (!rightSide) return false;
+    revealWidget();
     return true;
   }
 
   function startObserver() {
-    const target = document.getElementById('right-side') || document.body;
-    const obs = new MutationObserver(() => {
-      // Re-attach if Canvas re-rendered the sidebar and dropped our widget.
+    if (routeObs) return;
+    // Observe the document so we keep working across Canvas SPA re-renders
+    // that replace #right-side entirely.
+    routeObs = new MutationObserver(() => {
+      // Canvas SPA navigations often re-render the sidebar; react to path changes
+      // and re-attach if our widget was dropped on an allowed page.
+      if (location.pathname !== lastPath) {
+        handleRouteChange();
+        return;
+      }
+      if (!isAllowedPage()) {
+        unmount();
+        return;
+      }
       if (!document.getElementById(WIDGET_ID)) {
         mount();
       }
-      // Pull in Recent Feedback once Canvas has rendered it.
       syncRecentFeedback();
     });
-    obs.observe(target, { childList: true, subtree: true });
+    routeObs.observe(document.documentElement, { childList: true, subtree: true });
+  }
+
+  function syncCourseFilterFromPath() {
+    const next = getCourseIdFromPath();
+    const prev = state.courseFilter;
+    state.courseFilter = next;
+    return String(prev || '') !== String(next || '');
+  }
+
+  function handleRouteChange() {
+    lastPath = location.pathname;
+    const filterChanged = syncCourseFilterFromPath();
+
+    if (!isAllowedPage()) {
+      unmount();
+      return;
+    }
+
+    if (!booted) {
+      init();
+      return;
+    }
+
+    if (mount() && filterChanged) {
+      state.loading = true;
+      state.feedbackSynced = false;
+      renderBody();
+      loadData()
+        .then(() => {
+          state.loading = false;
+          state.error = null;
+        })
+        .catch((err) => {
+          state.loading = false;
+          state.error = err && err.message ? err.message : String(err);
+        })
+        .finally(() => {
+          updateTabs();
+          renderBody();
+          syncRecentFeedback();
+        });
+    }
+  }
+
+  function watchSpaNavigation() {
+    const notify = () => queueMicrotask(handleRouteChange);
+    try {
+      const wrap = (type) => {
+        const orig = history[type];
+        if (typeof orig !== 'function') return;
+        history[type] = function () {
+          const ret = orig.apply(this, arguments);
+          notify();
+          return ret;
+        };
+      };
+      wrap('pushState');
+      wrap('replaceState');
+    } catch (e) {
+      /* ignore */
+    }
+    window.addEventListener('popstate', notify);
   }
 
   function init() {
+    if (!isAllowedPage()) return;
     if (!mount()) {
-      // #right-side not present yet; wait for it.
+      // #right-side not present yet; wait for it (or for SPA to reach an allowed page).
       const bodyObs = new MutationObserver(() => {
+        if (!isAllowedPage()) return;
         if (mount()) {
           bodyObs.disconnect();
           afterMount();
@@ -1259,36 +1350,14 @@
   }
 
   function afterMount() {
+    if (booted) return;
+    booted = true;
     startObserver();
     countdownInterval = setInterval(updateCountdowns, 1000);
-    syncRecentFeedback();
-    // A few retries in case the native sidebar loads a bit later.
-    let tries = 0;
-    const fbTimer = setInterval(() => {
-      syncRecentFeedback();
-      if (state.feedbackSynced || ++tries > 20) clearInterval(fbTimer);
-    }, 500);
 
-    loadPeriod()
-      .then((period) => {
-        state.timePeriod = period;
-        updatePeriodMenu();
-        return loadPrefs();
-      })
-      .then((prefs) => {
-        state.defaultTab = prefs.defaultTab;
-        state.showOverdue = prefs.showOverdue;
-        state.activeTab = prefs.defaultTab;
-        return loadDone();
-      })
-      .then((set) => {
-        doneKeys = set;
-        return loadCustomTasks();
-      })
-      .then((tasks) => {
-        state.customTasks = tasks;
-        return loadData();
-      })
+    // Kick off storage + network together; categorize waits for both so
+    // done/custom prefs apply on the first paint (no storage→API waterfall).
+    loadData({ localP: loadAllLocal() })
       .then(() => {
         state.loading = false;
         state.error = null;
@@ -1298,15 +1367,26 @@
         state.error = err && err.message ? err.message : String(err);
       })
       .finally(() => {
-        updateTabs();
-        updatePeriodMenu();
-        renderBody();
+        revealWidget();
+        syncRecentFeedback();
+        let tries = 0;
+        const fbTimer = setInterval(() => {
+          syncRecentFeedback();
+          if (state.feedbackSynced || ++tries > 20) clearInterval(fbTimer);
+        }, 500);
       });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+  watchSpaNavigation();
+
+  if (isAllowedPage()) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
   } else {
-    init();
+    // Landed on a drilled-down Canvas page; wait for SPA nav to dashboard/home.
+    startObserver();
   }
 })();

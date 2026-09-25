@@ -14,8 +14,11 @@ thing well and gets out of your way.
 
 ## What it does
 
-On the Canvas home screen (dashboard), the right-hand **To Do** area is replaced
-with a custom panel split into three tabs:
+On the Canvas **dashboard** and on a **course home** page (e.g.
+`/courses/123456`), the right-hand **To Do** area is replaced with a custom
+panel split into three tabs. Deeper pages — assignments, quizzes, grades,
+modules, and similar — are left alone so Canvas can show grades and feedback
+there.
 
 - **Tasks** *(shown by default)* — assignments, quizzes, discussions, and peer
   reviews you still need to submit. Each one shows a live countdown of the time
@@ -42,7 +45,7 @@ show the same countdowns and course color, and are stored locally.
 
 A gear icon opens a **Settings** panel with:
 
-- **Default tab** — which tab (Tasks / Posts / Calendar) opens when the dashboard
+- **Default tab** — which tab (Tasks / Posts / Calendar) opens when the widget
   loads.
 - **Show overdue tasks** — toggle whether past-due assignments stay in the list.
 - **Restore all "Mark as Done" items** — bring back everything you've hidden.
@@ -95,9 +98,9 @@ involved. Everything runs locally in your browser.
 
 The extension works on any Canvas site. It matches `https://*/*` in
 `manifest.json` but stays completely dormant on non-Canvas pages — on each page
-it checks for Canvas-specific markers and only activates on the Canvas dashboard.
-To limit it to specific domains instead, narrow `host_permissions` and
-`content_scripts[].matches` in `manifest.json`.
+it checks for Canvas-specific markers and only activates on the dashboard and
+course home. To limit it to specific domains instead, narrow `host_permissions`
+and `content_scripts[].matches` in `manifest.json`.
 
 ## Files
 
@@ -110,8 +113,11 @@ To limit it to specific domains instead, narrow `host_permissions` and
 
 ## Notes & tweaks
 
+- **Where it runs:** dashboard (`/`) and course home (`/courses/<id>` only).
+  Assignment, quiz, grades, and other drilled-down URLs are ignored.
 - **Date window:** it loads items from 21 days ago through 120 days ahead. Adjust
-  in `loadData()` in `content.js`.
+  in `plannerUrl()` in `content.js`. Colors, courses, and planner items are
+  fetched in parallel.
 - **Time period:** choose Day / Week / 2 Weeks / Month from the header dropdown
   (the underlying `PERIODS` list lives in `content.js`).
 - **Default tab & overdue visibility:** set these in the **Settings** panel (gear

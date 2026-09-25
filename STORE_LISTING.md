@@ -27,8 +27,9 @@ English (United States)
 ## Detailed description
 
 Simple Canvas Tasks replaces the cluttered "To Do" sidebar on your Canvas
-dashboard with a focused, organized panel — so you can see what's actually due
-at a glance.
+dashboard (and on each course home page) with a focused, organized panel — so
+you can see what's actually due at a glance. It stays out of the way on
+assignment, quiz, and grades pages so Canvas can show feedback there.
 
 LIGHTWEIGHT ON PURPOSE
 
@@ -83,14 +84,16 @@ sponsored by Instructure or Canvas.
 Paste these into the "Privacy practices" tab of the dashboard.
 
 **Single purpose**
-> The extension has one purpose: to replace the Canvas dashboard "To Do" sidebar
-> with an organized, tabbed view of the user's upcoming tasks, announcements, and
-> calendar events, including due-date countdowns.
+> The extension has one purpose: to replace the Canvas "To Do" sidebar on the
+> dashboard and course home pages with an organized, tabbed view of the user's
+> upcoming tasks, announcements, and calendar events, including due-date
+> countdowns.
 
 **`storage` permission**
-> Used to save, on the user's own device, which tasks they have marked as "done"
-> so those tasks remain hidden after the page reloads. No personal data is stored
-> and nothing is transmitted.
+> Used to save, on the user's own device, which tasks they have marked as "done",
+> custom tasks they created, and UI preferences (time window, default tab,
+> overdue visibility) so those choices persist after the page reloads. No
+> personal data is transmitted.
 
 **Host permission (`https://*/*`)**
 > Canvas is self-hosted by each school on its own domain (e.g.
@@ -98,9 +101,10 @@ Paste these into the "Privacy practices" tab of the dashboard.
 > pattern that covers all Canvas installations. The extension therefore requests
 > broad host access, but it is dormant everywhere by default: on every page it
 > first checks for Canvas-specific markers and only activates on the Canvas
-> dashboard. When active, it reads the user's planner items and dashboard course
-> colors (via Canvas' own APIs, using the user's existing session) to render the
-> replacement sidebar. It never sends data anywhere.
+> dashboard and course home pages (not assignments, quizzes, grades, or other
+> drilled-down views). When active, it reads the user's planner items and
+> dashboard course colors (via Canvas' own APIs, using the user's existing
+> session) to render the replacement sidebar. It never sends data anywhere.
 
 **Remote code**
 > No. The extension contains no remote code; all JavaScript and CSS are bundled
@@ -146,6 +150,14 @@ Paste these into the "Privacy practices" tab of the dashboard.
    `manifest.json`, `content.js`, `styles.css`, and `icons/`. You do not need to
    include the `.md` files in the uploaded zip.
 5. **Bump the version** in `manifest.json` for each new upload.
+
+### Release notes (1.4.0) — paste into the store "What's new"
+
+```
+• Only shows on the Canvas dashboard and course home — no longer covers
+  assignment, quiz, or grades pages (so feedback stays visible).
+• Faster sidebar load: planner, colors, and courses fetch in parallel.
+```
 
 ### Quick zip command
 

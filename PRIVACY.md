@@ -1,10 +1,10 @@
 # Privacy Policy — Simple Canvas Tasks
 
-**Last updated: September 10, 2026**
+**Last updated: September 25, 2026**
 
 Simple Canvas Tasks ("the extension") is a browser extension that reorganizes the
-Canvas dashboard "To Do" sidebar. This policy explains what it does and does not
-do with your information.
+Canvas "To Do" sidebar on the dashboard and course home pages. This policy
+explains what it does and does not do with your information.
 
 ## Summary
 
@@ -29,13 +29,16 @@ to render the sidebar on the page. It is never sent anywhere else.
 
 ## What the extension stores
 
-- The extension uses Chrome's local storage (`chrome.storage.local`) to remember
-  which tasks you have marked "done," so they stay hidden across page reloads.
-- This is stored **only on your device**. It contains task identifiers (e.g.
-  `assignment:12345`) and no personal information. It is never transmitted.
+- The extension uses Chrome's local storage (`chrome.storage.local`) to remember:
+  - which tasks you have marked "done," so they stay hidden across page reloads
+  - custom tasks you create in the sidebar
+  - UI preferences (time window, default tab, overdue visibility)
+- This is stored **only on your device**. Done-markers are task identifiers (e.g.
+  `assignment:12345`); nothing is transmitted.
 
-You can clear this at any time by removing the extension's storage or the
-`sctDone` key in `chrome.storage.local`.
+You can clear this at any time by removing the extension's storage (or keys such
+as `sctDone`, `sctCustom`, `sctPeriod`, `sctDefaultTab`, and `sctShowOverdue`)
+in `chrome.storage.local`.
 
 ## What the extension does NOT do
 
@@ -47,9 +50,10 @@ You can clear this at any time by removing the extension's storage or the
 
 ## Permissions
 
-- **`storage`** — to remember locally which tasks you marked done.
+- **`storage`** — to remember locally which tasks you marked done, custom tasks,
+  and UI preferences.
 - **Host access to Canvas domains** — so the extension can run on, and read
-  planner data from, your Canvas dashboard.
+  planner data from, your Canvas dashboard and course home pages.
 
 ## Changes
 
