@@ -1,6 +1,6 @@
 # Privacy Policy — Simple Canvas Tasks
 
-**Last updated: September 25, 2026**
+**Last updated: September 28, 2026**
 
 Simple Canvas Tasks ("the extension") is a browser extension that reorganizes the
 Canvas "To Do" sidebar on the dashboard and course home pages. This policy
@@ -32,12 +32,13 @@ to render the sidebar on the page. It is never sent anywhere else.
 - The extension uses Chrome's local storage (`chrome.storage.local`) to remember:
   - which tasks you have marked "done," so they stay hidden across page reloads
   - custom tasks you create in the sidebar
-  - UI preferences (time window, default tab, overdue visibility)
+  - UI preferences (time window, default tab, overdue visibility, color theme)
 - This is stored **only on your device**. Done-markers are task identifiers (e.g.
   `assignment:12345`); nothing is transmitted.
 
 You can clear this at any time by removing the extension's storage (or keys such
-as `sctDone`, `sctCustom`, `sctPeriod`, `sctDefaultTab`, and `sctShowOverdue`)
+as `sctDone`, `sctCustom`, `sctPeriod`, `sctDefaultTab`, `sctShowOverdue`, and
+`sctTheme`)
 in `chrome.storage.local`.
 
 ## What the extension does NOT do

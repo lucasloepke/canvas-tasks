@@ -58,8 +58,9 @@ WHAT YOU GET
   they get the same countdowns and colors as your Canvas assignments.
 
 • Mark as done — a quick checkbox hides tasks you've finished, and remembers them
-  across reloads. A Settings panel lets you set your default tab, show or hide
-  overdue tasks, and restore everything you've marked done.
+  across reloads. A Settings panel lets you set your default tab, choose a color
+  theme (light, light gray, dark, or dark blue), show or hide overdue tasks,
+  and restore everything you've marked done.
 
 • Recent Feedback stays — the native Recent Feedback section is preserved right
   below your tasks.
@@ -92,8 +93,8 @@ Paste these into the "Privacy practices" tab of the dashboard.
 **`storage` permission**
 > Used to save, on the user's own device, which tasks they have marked as "done",
 > custom tasks they created, and UI preferences (time window, default tab,
-> overdue visibility) so those choices persist after the page reloads. No
-> personal data is transmitted.
+> overdue visibility, color theme) so those choices persist after the page
+> reloads. No personal data is transmitted.
 
 **Host permission (`https://*/*`)**
 > Canvas is self-hosted by each school on its own domain (e.g.
@@ -151,12 +152,11 @@ Paste these into the "Privacy practices" tab of the dashboard.
    include the `.md` files in the uploaded zip.
 5. **Bump the version** in `manifest.json` for each new upload.
 
-### Release notes (1.4.0) — paste into the store "What's new"
+### Release notes (1.5.0) — paste into the store "What's new"
 
 ```
-• Only shows on the Canvas dashboard and course home — no longer covers
-  assignment, quiz, or grades pages (so feedback stays visible).
-• Faster sidebar load: planner, colors, and courses fetch in parallel.
+• New Theme setting — Light, Light gray, Dark, or Dark blue for tabs, cards,
+  and menus (titles stay readable on the Canvas page).
 ```
 
 ### Quick zip command

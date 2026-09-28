@@ -47,6 +47,8 @@ A gear icon opens a **Settings** panel with:
 
 - **Default tab** — which tab (Tasks / Posts / Calendar) opens when the widget
   loads.
+- **Theme** — Light, Light gray, Dark, or Dark blue for the sidebar and
+  settings UI.
 - **Show overdue tasks** — toggle whether past-due assignments stay in the list.
 - **Restore all "Mark as Done" items** — bring back everything you've hidden.
 
