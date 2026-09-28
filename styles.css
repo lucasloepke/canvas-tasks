@@ -6,8 +6,135 @@ body.ctp-active #right-side > *:not(#ctp-widget) {
   display: none !important;
 }
 
+/* ---- Theme tokens (Light is the default) ---- */
+#ctp-widget,
+.ctp-modal-overlay {
+  --ctp-text: #2d3b45;
+  --ctp-text-muted: #6b7780;
+  --ctp-text-soft: #4a5b68;
+  --ctp-text-hint: #8a949b;
+  --ctp-surface: #ffffff;
+  --ctp-surface-raised: #fcfcfd;
+  --ctp-surface-muted: #f5f5f5;
+  --ctp-surface-hover: #ebeef0;
+  --ctp-surface-btn: #f0f1f2;
+  --ctp-border: #c7cdd1;
+  --ctp-border-soft: #d3d9de;
+  --ctp-border-row: #eef0f1;
+  --ctp-border-head: #e3e6e8;
+  --ctp-accent: #0374b5;
+  --ctp-accent-hover: #025d90;
+  --ctp-accent-text: #ffffff;
+  --ctp-danger: #c5292a;
+  --ctp-danger-text: #b81111;
+  --ctp-danger-bg: #fbecec;
+  --ctp-danger-border: #e0b4b4;
+  --ctp-ok: #0b7c3f;
+  --ctp-done-bg: #f0f1f2;
+  --ctp-done-fg: #a3abb2;
+  --ctp-overlay: rgba(0, 0, 0, 0.45);
+  --ctp-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  --ctp-shadow-item: 0 1px 5px rgba(0, 0, 0, 0.12);
+  --ctp-shadow-modal: 0 8px 30px rgba(0, 0, 0, 0.3);
+  --ctp-switch-off: #c7cdd1;
+  --ctp-switch-knob: #ffffff;
+}
+
+/* Light gray — light mode with muted surfaces */
+#ctp-widget[data-ctp-theme="soft"],
+.ctp-modal-overlay[data-ctp-theme="soft"] {
+  --ctp-text: #2a343d;
+  --ctp-text-muted: #5f6b75;
+  --ctp-text-soft: #44515c;
+  --ctp-text-hint: #7a858e;
+  --ctp-surface: #eef1f4;
+  --ctp-surface-raised: #e4e8ec;
+  --ctp-surface-muted: #e0e5ea;
+  --ctp-surface-hover: #d5dbe1;
+  --ctp-surface-btn: #dce1e6;
+  --ctp-border: #b8c0c8;
+  --ctp-border-soft: #c5ccd3;
+  --ctp-border-row: #d9dee4;
+  --ctp-border-head: #d0d6dc;
+  --ctp-accent: #0369a1;
+  --ctp-accent-hover: #025485;
+  --ctp-done-bg: #dce1e6;
+  --ctp-done-fg: #8a949b;
+  --ctp-switch-off: #b8c0c8;
+}
+
+/* Dark */
+#ctp-widget[data-ctp-theme="dark"],
+.ctp-modal-overlay[data-ctp-theme="dark"] {
+  --ctp-text: #e8eaed;
+  --ctp-text-muted: #a8b0b8;
+  --ctp-text-soft: #c2c8ce;
+  --ctp-text-hint: #8b949e;
+  --ctp-surface: #2b3036;
+  --ctp-surface-raised: #343a41;
+  --ctp-surface-muted: #3a4149;
+  --ctp-surface-hover: #454d57;
+  --ctp-surface-btn: #3a4149;
+  --ctp-border: #4a525c;
+  --ctp-border-soft: #555e69;
+  --ctp-border-row: #3f464e;
+  --ctp-border-head: #3f464e;
+  --ctp-accent: #3b9dd6;
+  --ctp-accent-hover: #2f87bb;
+  --ctp-accent-text: #ffffff;
+  --ctp-danger: #f07178;
+  --ctp-danger-text: #f07178;
+  --ctp-danger-bg: #3a2a2c;
+  --ctp-danger-border: #6b4044;
+  --ctp-ok: #5ecf8a;
+  --ctp-done-bg: #3a4149;
+  --ctp-done-fg: #8b949e;
+  --ctp-overlay: rgba(0, 0, 0, 0.6);
+  --ctp-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+  --ctp-shadow-item: 0 1px 6px rgba(0, 0, 0, 0.35);
+  --ctp-shadow-modal: 0 8px 30px rgba(0, 0, 0, 0.55);
+  --ctp-switch-off: #555e69;
+  --ctp-switch-knob: #e8eaed;
+}
+
+/* Dark blue / midnight */
+#ctp-widget[data-ctp-theme="midnight"],
+.ctp-modal-overlay[data-ctp-theme="midnight"] {
+  --ctp-text: #e6eef8;
+  --ctp-text-muted: #9bb0c7;
+  --ctp-text-soft: #b7c7da;
+  --ctp-text-hint: #7f95ad;
+  --ctp-surface: #1a2740;
+  --ctp-surface-raised: #223353;
+  --ctp-surface-muted: #24385a;
+  --ctp-surface-hover: #2d4468;
+  --ctp-surface-btn: #24385a;
+  --ctp-border: #355074;
+  --ctp-border-soft: #3d5c84;
+  --ctp-border-row: #2a3f5f;
+  --ctp-border-head: #2a3f5f;
+  --ctp-accent: #4aa3e0;
+  --ctp-accent-hover: #3b8fc8;
+  --ctp-accent-text: #ffffff;
+  --ctp-danger: #f07178;
+  --ctp-danger-text: #f07178;
+  --ctp-danger-bg: #2c3148;
+  --ctp-danger-border: #5a4a5e;
+  --ctp-ok: #5ecf8a;
+  --ctp-done-bg: #24385a;
+  --ctp-done-fg: #7f95ad;
+  --ctp-overlay: rgba(6, 12, 24, 0.65);
+  --ctp-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+  --ctp-shadow-item: 0 1px 6px rgba(0, 0, 0, 0.35);
+  --ctp-shadow-modal: 0 8px 30px rgba(0, 0, 0, 0.55);
+  --ctp-switch-off: #3d5c84;
+  --ctp-switch-knob: #e6eef8;
+}
+
 #ctp-widget {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* Stay readable on the Canvas page background (often white), even when
+     cards/tabs use a dark theme. Themed surfaces set their own text colors. */
   color: #2d3b45;
   margin-bottom: 24px;
   max-width: 100%;
@@ -27,7 +154,7 @@ body.ctp-active #right-side > *:not(#ctp-widget) {
   align-items: center;
   justify-content: space-between;
   padding: 0 0 8px;
-  border-bottom: 1px solid #c7cdd1;
+  border-bottom: 1px solid var(--ctp-border);
   margin-bottom: 10px;
 }
 
@@ -64,21 +191,21 @@ body.ctp-active #right-side > *:not(#ctp-widget) {
   font-size: 0.8rem;
   font-weight: 600;
   line-height: 1;
-  color: #2d3b45;
-  background: #fcfcfd;
-  border: 1px solid #c7cdd1;
+  color: var(--ctp-text);
+  background: var(--ctp-surface-raised);
+  border: 1px solid var(--ctp-border);
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 #ctp-widget .ctp-period-btn:hover {
-  background: #e8eaec;
+  background: var(--ctp-surface-hover);
 }
 
 #ctp-widget .ctp-period-arrow {
   display: block;
-  color: #6b7780;
+  color: var(--ctp-text-muted);
 }
 
 #ctp-widget .ctp-settings-btn {
@@ -98,8 +225,8 @@ body.ctp-active #right-side > *:not(#ctp-widget) {
 }
 
 #ctp-widget .ctp-settings-btn:hover {
-  background: #e8eaec;
-  color: #2d3b45;
+  background: var(--ctp-surface-hover);
+  color: var(--ctp-text);
 }
 
 #ctp-widget .ctp-settings-btn svg {
@@ -113,10 +240,10 @@ body.ctp-active #right-side > *:not(#ctp-widget) {
   z-index: 10;
   min-width: 170px;
   padding: 6px;
-  background: #fff;
-  border: 1px solid #c7cdd1;
+  background: var(--ctp-surface);
+  border: 1px solid var(--ctp-border);
   border-radius: 6px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--ctp-shadow);
 }
 
 #ctp-widget .ctp-settings-menu[hidden] {
@@ -130,7 +257,7 @@ body.ctp-active #right-side > *:not(#ctp-widget) {
   text-align: left;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #2d3b45;
+  color: var(--ctp-text);
   background: transparent;
   border: none;
   border-radius: 4px;
@@ -139,17 +266,17 @@ body.ctp-active #right-side > *:not(#ctp-widget) {
 }
 
 #ctp-widget .ctp-settings-option:hover {
-  background: #ebeef0;
+  background: var(--ctp-surface-hover);
 }
 
 #ctp-widget .ctp-settings-option--active {
-  background: #0374b5;
-  color: #fff;
+  background: var(--ctp-accent);
+  color: var(--ctp-accent-text);
 }
 
 #ctp-widget .ctp-settings-option--active:hover {
-  background: #0374b5;
-  color: #fff;
+  background: var(--ctp-accent);
+  color: var(--ctp-accent-text);
 }
 
 /* Tabs */
@@ -171,9 +298,9 @@ body.ctp-active #right-side > *:not(#ctp-widget) {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.01em;
-  color: #6b7780;
-  background: #f5f5f5;
-  border: 1px solid #d3d9de;
+  color: var(--ctp-text-muted);
+  background: var(--ctp-surface-muted);
+  border: 1px solid var(--ctp-border-soft);
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
@@ -187,14 +314,14 @@ body.ctp-active #right-side > *:not(#ctp-widget) {
 }
 
 #ctp-widget .ctp-tab:hover {
-  background: #ebeef0;
-  color: #2d3b45;
+  background: var(--ctp-surface-hover);
+  color: var(--ctp-text);
 }
 
 #ctp-widget .ctp-tab--active {
-  background: #0374b5;
-  border-color: #0374b5;
-  color: #fff;
+  background: var(--ctp-accent);
+  border-color: var(--ctp-accent);
+  color: var(--ctp-accent-text);
 }
 
 /* Body / list */
@@ -225,9 +352,9 @@ body.ctp-active #right-side > *:not(#ctp-widget) {
   position: relative;
   display: block;
   padding: 10px 12px;
-  background: #fff;
-  border: 1px solid #d3d9de;
-  border-left: 4px solid #0374b5;
+  background: var(--ctp-surface);
+  border: 1px solid var(--ctp-border-soft);
+  border-left: 4px solid var(--ctp-accent);
   border-radius: 6px;
   text-decoration: none;
   color: inherit;
@@ -235,7 +362,7 @@ body.ctp-active #right-side > *:not(#ctp-widget) {
 }
 
 a.ctp-item:hover {
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--ctp-shadow-item);
   text-decoration: none;
 }
 
@@ -253,21 +380,21 @@ a.ctp-item:active {
 #ctp-widget .ctp-item-title {
   font-weight: 700;
   font-size: 0.9rem;
-  color: #2d3b45;
+  color: var(--ctp-text);
   overflow-wrap: anywhere;
   word-break: break-word;
 }
 
 #ctp-widget .ctp-item-course {
   font-size: 0.75rem;
-  color: #6b7780;
+  color: var(--ctp-text-muted);
   margin-bottom: 4px;
   overflow-wrap: anywhere;
 }
 
 #ctp-widget .ctp-item-when {
   font-size: 0.78rem;
-  color: #4a5b68;
+  color: var(--ctp-text-soft);
 }
 
 /* Mark-as-done checkbox */
@@ -287,17 +414,17 @@ a.ctp-item:active {
   justify-content: center;
   font-size: 13px;
   line-height: 1;
-  color: #a3abb2;
-  background: #f0f1f2;
-  border: 1px solid #c7cdd1;
+  color: var(--ctp-done-fg);
+  background: var(--ctp-done-bg);
+  border: 1px solid var(--ctp-border);
   border-radius: 4px;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 #ctp-widget .ctp-done-btn:hover {
-  background: #0b7c3f;
-  border-color: #0b7c3f;
+  background: var(--ctp-ok);
+  border-color: var(--ctp-ok);
   color: #fff;
 }
 
@@ -306,29 +433,29 @@ a.ctp-item:active {
   margin-top: 5px;
   font-size: 0.82rem;
   font-weight: 700;
-  color: #0b7c3f;
+  color: var(--ctp-ok);
 }
 
 #ctp-widget .ctp-countdown--soon {
-  color: #c5292a;
+  color: var(--ctp-danger);
 }
 
 #ctp-widget .ctp-countdown--urgent {
-  color: #c5292a;
+  color: var(--ctp-danger);
 }
 
 #ctp-widget .ctp-countdown--overdue {
-  color: #c5292a;
+  color: var(--ctp-danger);
 }
 
 #ctp-widget .ctp-countdown--none {
-  color: #6b7780;
+  color: var(--ctp-text-muted);
   font-weight: 400;
 }
 
 #ctp-widget .ctp-due-abs {
   font-weight: 400;
-  color: #6b7780;
+  color: var(--ctp-text-muted);
 }
 
 /* Add-task control + form */
@@ -345,18 +472,18 @@ a.ctp-item:active {
   padding: 5px 12px;
   font-size: 0.8rem;
   font-weight: 700;
-  color: #6b7780;
-  background: #f5f5f5;
-  border: 1px dashed #c7cdd1;
+  color: var(--ctp-text-muted);
+  background: var(--ctp-surface-muted);
+  border: 1px dashed var(--ctp-border);
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 #ctp-widget .ctp-add-btn:hover {
-  background: #ebeef0;
-  color: #2d3b45;
-  border-color: #0374b5;
+  background: var(--ctp-surface-hover);
+  color: var(--ctp-text);
+  border-color: var(--ctp-accent);
 }
 
 #ctp-widget .ctp-add-plus {
@@ -365,7 +492,7 @@ a.ctp-item:active {
   line-height: 1;
 }
 
-/* Add-task modal */
+/* Add-task / settings modal */
 .ctp-modal-overlay {
   position: fixed;
   inset: 0;
@@ -374,9 +501,9 @@ a.ctp-item:active {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.45);
+  background: var(--ctp-overlay);
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #2d3b45;
+  color: var(--ctp-text);
 }
 
 .ctp-modal-overlay *,
@@ -390,9 +517,10 @@ a.ctp-item:active {
   max-width: 420px;
   max-height: calc(100vh - 40px);
   overflow-y: auto;
-  background: #fff;
+  background: var(--ctp-surface);
   border-radius: 8px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--ctp-shadow-modal);
+  border: 1px solid var(--ctp-border);
 }
 
 .ctp-modal--sm {
@@ -404,7 +532,7 @@ a.ctp-item:active {
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px;
-  border-bottom: 1px solid #e3e6e8;
+  border-bottom: 1px solid var(--ctp-border-head);
 }
 
 .ctp-modal-title {
@@ -413,7 +541,7 @@ a.ctp-item:active {
   border: none;
   font-size: 1.15rem;
   font-weight: 700;
-  color: #2d3b45;
+  color: var(--ctp-text);
 }
 
 .ctp-modal-close {
@@ -424,7 +552,7 @@ a.ctp-item:active {
   justify-content: center;
   font-size: 22px;
   line-height: 1;
-  color: #6b7780;
+  color: var(--ctp-text-muted);
   background: transparent;
   border: none;
   border-radius: 6px;
@@ -433,8 +561,8 @@ a.ctp-item:active {
 }
 
 .ctp-modal-close:hover {
-  background: #e8eaec;
-  color: #2d3b45;
+  background: var(--ctp-surface-hover);
+  color: var(--ctp-text);
 }
 
 .ctp-add-form {
@@ -453,7 +581,7 @@ a.ctp-item:active {
 .ctp-add-label {
   font-size: 0.78rem;
   font-weight: 700;
-  color: #4a5b68;
+  color: var(--ctp-text-soft);
 }
 
 .ctp-add-input,
@@ -464,9 +592,9 @@ a.ctp-item:active {
   font-size: 0.9rem;
   line-height: 1.2;
   font-family: inherit;
-  color: #2d3b45;
-  background: #fff;
-  border: 1px solid #c7cdd1;
+  color: var(--ctp-text);
+  background: var(--ctp-surface-raised);
+  border: 1px solid var(--ctp-border);
   border-radius: 4px;
 }
 
@@ -476,6 +604,12 @@ a.ctp-item:active {
 .ctp-add-dateinput {
   position: relative;
   cursor: pointer;
+  color-scheme: light;
+}
+
+.ctp-modal-overlay[data-ctp-theme="dark"] .ctp-add-dateinput,
+.ctp-modal-overlay[data-ctp-theme="midnight"] .ctp-add-dateinput {
+  color-scheme: dark;
 }
 
 .ctp-add-dateinput::-webkit-calendar-picker-indicator {
@@ -497,13 +631,13 @@ a.ctp-item:active {
 .ctp-add-input:focus,
 .ctp-add-select:focus {
   outline: none;
-  border-color: #0374b5;
-  box-shadow: 0 0 0 1px #0374b5;
+  border-color: var(--ctp-accent);
+  box-shadow: 0 0 0 1px var(--ctp-accent);
 }
 
 .ctp-add-input--error {
-  border-color: #c5292a;
-  box-shadow: 0 0 0 1px #c5292a;
+  border-color: var(--ctp-danger);
+  box-shadow: 0 0 0 1px var(--ctp-danger);
 }
 
 .ctp-add-actions {
@@ -524,25 +658,25 @@ a.ctp-item:active {
 }
 
 .ctp-add-submit {
-  color: #fff;
-  background: #0374b5;
-  border: 1px solid #0374b5;
+  color: var(--ctp-accent-text);
+  background: var(--ctp-accent);
+  border: 1px solid var(--ctp-accent);
 }
 
 .ctp-add-submit:hover {
-  background: #025d90;
-  border-color: #025d90;
+  background: var(--ctp-accent-hover);
+  border-color: var(--ctp-accent-hover);
 }
 
 .ctp-add-cancel {
-  color: #6b7780;
-  background: #f0f1f2;
-  border: 1px solid #c7cdd1;
+  color: var(--ctp-text-muted);
+  background: var(--ctp-surface-btn);
+  border: 1px solid var(--ctp-border);
 }
 
 .ctp-add-cancel:hover {
-  background: #e2e5e8;
-  color: #2d3b45;
+  background: var(--ctp-surface-hover);
+  color: var(--ctp-text);
 }
 
 /* Settings modal body */
@@ -560,7 +694,7 @@ a.ctp-item:active {
 
 /* Subtle divider between each settings row. */
 .ctp-modal-body .ctp-modal-row + .ctp-modal-row {
-  border-top: 1px solid #eef0f1;
+  border-top: 1px solid var(--ctp-border-row);
 }
 
 .ctp-modal-row-text {
@@ -570,14 +704,14 @@ a.ctp-item:active {
 .ctp-modal-row-label {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #2d3b45;
+  color: var(--ctp-text);
 }
 
 .ctp-modal-row-hint {
   margin-top: 2px;
   font-size: 0.78rem;
   line-height: 1.35;
-  color: #8a949b;
+  color: var(--ctp-text-hint);
 }
 
 .ctp-modal-select {
@@ -590,17 +724,17 @@ a.ctp-item:active {
   line-height: 1.2;
   font-size: 0.85rem;
   font-family: inherit;
-  color: #2d3b45;
-  background: #fff;
-  border: 1px solid #c7cdd1;
+  color: var(--ctp-text);
+  background: var(--ctp-surface-raised);
+  border: 1px solid var(--ctp-border);
   border-radius: 6px;
   cursor: pointer;
 }
 
 .ctp-modal-select:focus {
   outline: none;
-  border-color: #0374b5;
-  box-shadow: 0 0 0 1px #0374b5;
+  border-color: var(--ctp-accent);
+  box-shadow: 0 0 0 1px var(--ctp-accent);
 }
 
 /* Toggle switch */
@@ -623,7 +757,7 @@ a.ctp-item:active {
 .ctp-switch-slider {
   position: absolute;
   inset: 0;
-  background: #c7cdd1;
+  background: var(--ctp-switch-off);
   border-radius: 999px;
   transition: background 0.15s ease;
   pointer-events: none;
@@ -636,14 +770,14 @@ a.ctp-item:active {
   left: 2px;
   width: 18px;
   height: 18px;
-  background: #fff;
+  background: var(--ctp-switch-knob);
   border-radius: 50%;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   transition: transform 0.15s ease;
 }
 
 .ctp-switch input:checked + .ctp-switch-slider {
-  background: #0374b5;
+  background: var(--ctp-accent);
 }
 
 .ctp-switch input:checked + .ctp-switch-slider::before {
@@ -669,21 +803,24 @@ a.ctp-item:active {
 }
 
 .ctp-modal-btn--secondary {
-  color: #b81111;
-  background: #fff;
-  border: 1px solid #d7dade;
+  color: var(--ctp-danger-text);
+  background: var(--ctp-surface);
+  border: 1px solid var(--ctp-border-soft);
 }
 
 .ctp-modal-btn--secondary:hover {
-  background: #fbecec;
-  border-color: #e0b4b4;
+  background: var(--ctp-danger-bg);
+  border-color: var(--ctp-danger-border);
 }
 
-/* Recent Feedback (cloned from Canvas' native sidebar) */
+/* Recent Feedback (cloned from Canvas' native sidebar).
+   Leave Canvas' own text colors alone so headings stay readable on the
+   page background; only the divider uses the theme. */
 #ctp-widget .ctp-feedback {
   margin-top: 18px;
   padding-top: 14px;
-  border-top: 1px solid #c7cdd1;
+  border-top: 1px solid var(--ctp-border);
+  color: #2d3b45;
 }
 
 /* Confetti burst on marking a task done */

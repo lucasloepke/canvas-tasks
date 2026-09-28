@@ -66,6 +66,7 @@
     timePeriod: 'week',
     defaultTab: 'assignments', // tab shown when the widget first loads
     showOverdue: true, // include past-due assignments in the list
+    theme: 'light', // light | soft | dark | midnight
     loading: true,
     error: null,
     feedbackSynced: false,
@@ -77,6 +78,14 @@
     ['week', 'Week', 7],
     ['2weeks', '2 Weeks', 14],
     ['month', 'Month', 30],
+  ];
+
+  // Sidebar / modal color themes (persisted as sctTheme).
+  const THEMES = [
+    ['light', 'Light'],
+    ['soft', 'Light gray'],
+    ['dark', 'Dark'],
+    ['midnight', 'Dark blue'],
   ];
 
   let widget = null;
@@ -215,12 +224,20 @@
         period: 'week',
         defaultTab: 'assignments',
         showOverdue: true,
+        theme: 'light',
         done: new Set(),
         customTasks: [],
       };
       try {
         chrome.storage.local.get(
-          ['sctPeriod', 'sctDefaultTab', 'sctShowOverdue', 'sctDone', 'sctCustom'],
+          [
+            'sctPeriod',
+            'sctDefaultTab',
+            'sctShowOverdue',
+            'sctTheme',
+            'sctDone',
+            'sctCustom',
+          ],
           (res) => {
             if (!res) return resolve(fallback);
             resolve({
@@ -228,6 +245,7 @@
               defaultTab: res.sctDefaultTab || 'assignments',
               showOverdue:
                 res.sctShowOverdue === undefined ? true : !!res.sctShowOverdue,
+              theme: normalizeTheme(res.sctTheme),
               done: new Set(res.sctDone || []),
               customTasks: Array.isArray(res.sctCustom) ? res.sctCustom : [],
             });
@@ -252,10 +270,24 @@
       chrome.storage.local.set({
         sctDefaultTab: state.defaultTab,
         sctShowOverdue: state.showOverdue,
+        sctTheme: state.theme,
       });
     } catch (e) {
       /* no-op */
     }
+  }
+
+  function normalizeTheme(key) {
+    return THEMES.some((t) => t[0] === key) ? key : 'light';
+  }
+
+  function applyTheme() {
+    const theme = normalizeTheme(state.theme);
+    state.theme = theme;
+    if (widget) widget.setAttribute('data-ctp-theme', theme);
+    document.querySelectorAll('.ctp-modal-overlay').forEach((el) => {
+      el.setAttribute('data-ctp-theme', theme);
+    });
   }
 
   function periodDays() {
@@ -387,9 +419,11 @@
     state.timePeriod = local.period;
     state.defaultTab = local.defaultTab;
     state.showOverdue = local.showOverdue;
+    state.theme = normalizeTheme(local.theme);
     state.activeTab = local.defaultTab;
     doneKeys = local.done;
     state.customTasks = local.customTasks;
+    applyTheme();
   }
 
   // Fetch colors, courses, and planner in parallel. Optionally await local
@@ -551,6 +585,7 @@
   function buildWidget() {
     const w = document.createElement('div');
     w.id = WIDGET_ID;
+    w.setAttribute('data-ctp-theme', normalizeTheme(state.theme));
 
     const header = document.createElement('div');
     header.className = 'ctp-header';
@@ -789,6 +824,25 @@
     });
     tabRow.appendChild(tabSelect);
 
+    // Color theme for the sidebar + settings/add-task modals.
+    const themeRow = row('Theme');
+    const themeSelect = document.createElement('select');
+    themeSelect.className = 'ctp-modal-select';
+    themeSelect.setAttribute('aria-label', 'Theme');
+    THEMES.forEach(([val, label]) => {
+      const opt = document.createElement('option');
+      opt.value = val;
+      opt.textContent = label;
+      if (val === state.theme) opt.selected = true;
+      themeSelect.appendChild(opt);
+    });
+    themeSelect.addEventListener('change', () => {
+      state.theme = normalizeTheme(themeSelect.value);
+      savePrefs();
+      applyTheme();
+    });
+    themeRow.appendChild(themeSelect);
+
     // Show overdue tasks toggle.
     const overdueRow = row('Show overdue tasks');
     overdueRow.appendChild(
@@ -812,12 +866,14 @@
     resetRow.appendChild(resetBtn);
 
     bodyEl.appendChild(tabRow);
+    bodyEl.appendChild(themeRow);
     bodyEl.appendChild(overdueRow);
     bodyEl.appendChild(resetRow);
 
     modal.appendChild(head);
     modal.appendChild(bodyEl);
     overlay.appendChild(modal);
+    overlay.setAttribute('data-ctp-theme', normalizeTheme(state.theme));
 
     // Close when clicking the backdrop or pressing Escape.
     overlay.addEventListener('click', (e) => {
@@ -993,6 +1049,7 @@
 
     const overlay = document.createElement('div');
     overlay.className = 'ctp-modal-overlay';
+    overlay.setAttribute('data-ctp-theme', normalizeTheme(state.theme));
     overlay.addEventListener('click', (e) => {
       if (e.target === overlay) closeAddTaskModal();
     });
