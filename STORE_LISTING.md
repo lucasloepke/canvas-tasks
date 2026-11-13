@@ -155,11 +155,10 @@ Paste these into the "Privacy practices" tab of the dashboard.
    include the `.md` files in the uploaded zip.
 5. **Bump the version** in `manifest.json` for each new upload.
 
-### Release notes (1.5.0) — paste into the store "What's new"
+### Release notes (1.5.1) — paste into the store "What's new"
 
 ```
-• New Theme setting — Light, Light gray, Dark, or Dark blue for tabs, cards,
-  and menus (titles stay readable on the Canvas page).
+• New logo and icons.
 ```
 
 ### Quick zip command
