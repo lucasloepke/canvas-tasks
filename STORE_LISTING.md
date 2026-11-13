@@ -125,13 +125,16 @@ Paste these into the "Privacy practices" tab of the dashboard.
 
 ## Asset checklist (upload in the dashboard)
 
-- [ ] **Store icon** — 128×128 PNG (already have `icons/icon128.png`).
+- [ ] **Store icon** — 128×128 PNG: `icons/icon128.png` (source: `icons/icon.svg`;
+      the 16px icon has its own simplified source, `icons/icon16.svg`).
 - [ ] **Screenshots** — at least 1, either 1280×800 or 640×400 PNG/JPEG.
       Recommended: 2–4 showing the Tasks tab with countdowns, the Posts tab, the
       Calendar tab, and the per-class colors.
-- [ ] **Small promo tile** — 440×280 PNG/JPEG (required if you want to be
-      featured; often required by the form).
-- [ ] *(Optional)* Marquee promo tile — 1400×560.
+- [ ] **Small promo tile** — 440×280 PNG: `store-assets/promo-small-440x280.png`.
+      This is the image shown on the store's listing cards; without it the card
+      falls back to the small icon on a blank background.
+- [ ] *(Optional)* Marquee promo tile — 1400×560:
+      `store-assets/promo-marquee-1400x560.png`.
 
 ---
 
@@ -163,5 +166,5 @@ Paste these into the "Privacy practices" tab of the dashboard.
 
 ```bash
 cd canvas-tasks
-zip -r simple-canvas-tasks.zip manifest.json content.js styles.css icons
+zip -r simple-canvas-tasks.zip manifest.json content.js styles.css icons/*.png
 ```
