@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+  <!-- Source for icon16.png: full-bleed tile and heavier strokes so it stays legible in the toolbar -->
+  <defs>
+    <mask id="cut" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
+      <rect width="16" height="16" fill="#fff"/>
+      <path d="M5.9 8l2.1 2.3 5-6" fill="none" stroke="#000" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </mask>
+  </defs>
+  <rect width="16" height="16" rx="3.6" fill="#0374b5"/>
+  <rect x="3.3" y="3.3" width="9.4" height="9.4" rx="2.6" fill="none" stroke="#fff" stroke-width="1.6" mask="url(#cut)"/>
+  <path d="M5.9 8l2.1 2.3 5-6" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
